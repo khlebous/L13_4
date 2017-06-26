@@ -29,7 +29,7 @@ namespace ASD
 
             /// <summary>
             /// Indeks odcinka/prodtokąta w odpowiedniej tablicy
-            /// </summary>
+            /// </summary>   
             public int Idx;
 
             public SweepEvent(double c, bool sp, int i = -1) { Coord = c; IsStartingPoint = sp; Idx = i; }
@@ -85,7 +85,49 @@ namespace ASD
         /// </param>
         public double RectanglesUnionArea(Geometry.Rectangle[] rectangles)
         {
-            return -1;
+            // int - indeks odcinka, bool - lewy bok (true), pawy bok (false)
+            List<Tuple<Geometry.Segment, bool>> segments = new List<Tuple<Geometry.Segment, bool>>();
+            Dictionary<Geometry.Segment, Geometry.Segment> Dict = new Dictionary<Geometry.Segment, Geometry.Segment>();
+            foreach (Geometry.Rectangle rectange in rectangles)
+            {
+                Geometry.Segment s1 = new Geometry.Segment(new Geometry.Point(rectange.MinX, rectange.MinY),
+                                                           new Geometry.Point(rectange.MinX, rectange.MaxY));
+                Geometry.Segment s2 = new Geometry.Segment(new Geometry.Point(rectange.MaxX, rectange.MinY),
+                                                           new Geometry.Point(rectange.MaxX, rectange.MaxY));
+                segments.Add(new Tuple<Geometry.Segment, bool>(s1, true));
+                segments.Add(new Tuple<Geometry.Segment, bool>(s2, false));
+                //if (!Dict.ContainsKey(s2))
+                    Dict.Add(s2, s1);
+            }
+            segments.Sort((s1, s2) => s1.Item1.ps.x.CompareTo(s2.Item1.ps.x));
+            List<Geometry.Segment> ptr = new List<Geometry.Segment>();
+            ptr.Add(segments[0].Item1);
+            double rectanglesUnionArea = 0;
+            double x1 = segments[0].Item1.ps.x;
+            for (int i = 1; i < segments.Count; i++)
+            {
+                double x2 = segments[i].Item1.ps.x;
+                double D=0;
+                if (ptr.Count > 0)
+                {
+                    D = VerticalSegmentsUnionLength(ptr.ToArray());
+                    rectanglesUnionArea += Math.Abs(x2 - x1) * D;
+                    x1 = x2;
+                }
+                if (segments[i].Item2)
+                {
+                    x1 = segments[i].Item1.ps.x;
+                    ptr.Add(segments[i].Item1);
+                }
+                else
+                {
+                    //int nrTmp = dict2[segments[i].Item1];
+                    //Geometry.Segment tmpSegment = dict[nrTmp];
+                    Geometry.Segment tmpSegment = Dict[segments[i].Item1];
+                    ptr.Remove(tmpSegment);
+                }
+            }
+            return rectanglesUnionArea;
         }
 
     }

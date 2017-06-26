@@ -41,7 +41,7 @@ namespace ASD
         protected TestResult CheckResults(Exception exception, bool verbose)
         {
             if (exception != null)
-                return testResult=TestResult.EXCEPTION;
+                return testResult = TestResult.EXCEPTION;
             return IsGoodResult(verbose);
         }
 
@@ -52,7 +52,7 @@ namespace ASD
             sw = new Stopwatch();
             exception = null;
             CreateThread(swallowExceptions);
-            var result =  RunThread(enforceTimeout, systemSpeedFactor, verbose);
+            var result = RunThread(enforceTimeout, systemSpeedFactor, verbose);
             PrintResult();
             return result;
         }
@@ -65,7 +65,7 @@ namespace ASD
                 if (!thread.Join(debugerThreadingTime + (int)Math.Ceiling(timeout * systemSpeedFactor)))
                 {
                     thread.Abort();
-                    return testResult=TestResult.TIMEOUT;
+                    return testResult = TestResult.TIMEOUT;
                 }
                 else
                 {
@@ -119,9 +119,9 @@ namespace ASD
         protected override TestResult IsGoodResult(bool verbose)
         {
             if (Math.Abs(correctResult - studentsResult) <= 0.005)
-                return testResult=TestResult.PASSED;
+                return testResult = TestResult.PASSED;
             else
-                return testResult=TestResult.BAD_RESULT;
+                return testResult = TestResult.BAD_RESULT;
         }
 
         protected override void YourTest()
@@ -134,10 +134,10 @@ namespace ASD
 
         public override void PrintResult()
         {
-            switch(testResult)
+            switch (testResult)
             {
                 case TestResult.PASSED:
-                    Console.WriteLine("Test {2,2}: Gratulacje! Wynik ktory wyszedl to: {0,3}, a oczekiwalismy {1,3}",studentsResult, correctResult, myNumber);
+                    Console.WriteLine("Test {2,2}: Gratulacje! Wynik ktory wyszedl to: {0,3}, a oczekiwalismy {1,3}", studentsResult, correctResult, myNumber);
                     break;
                 case TestResult.BAD_RESULT:
                     Console.WriteLine("Test {2,2}: Porazka! Wynik ktory wyszedl to: {0,3}, a oczekiwalismy {1,3}", studentsResult, correctResult, myNumber);
@@ -254,7 +254,7 @@ namespace ASD
             testSegment6.Add(new Geometry.Segment(new Geometry.Point(0, 0), new Geometry.Point(0, 1)));
             testSegment6.Add(new Geometry.Segment(new Geometry.Point(0, 1), new Geometry.Point(0, 3)));
 
-            List < Geometry.Segment > testSegment7 = new List<Geometry.Segment>();
+            List<Geometry.Segment> testSegment7 = new List<Geometry.Segment>();
             testSegment7.Add(new Geometry.Segment(new Geometry.Point(0, 1), new Geometry.Point(0, 2)));
             testSegment7.Add(new Geometry.Segment(new Geometry.Point(0, 3), new Geometry.Point(0, 5)));
             testSegment7.Add(new Geometry.Segment(new Geometry.Point(0, 3), new Geometry.Point(0, 7)));
@@ -279,7 +279,7 @@ namespace ASD
                 new TestCaseSegment(testSegment7,6,0.0001),
                 new TestCaseSegment(testSegment8,0,0.0001)
             };
-            
+
             TestResult[] etap1 = tc.Select(t => t.PerformTest(false, speedFactor, verbose, swallowExceptions)).ToArray();
 
             bool passedStage1 = etap1.All(r => r == TestResult.PASSED);
@@ -306,9 +306,6 @@ namespace ASD
 
             List<Geometry.Rectangle> testRectangle5 = new List<Geometry.Rectangle>();
             testRectangle5.Add(new Geometry.Rectangle(0, 0, 0, 0));
-            testRectangle5.Add(new Geometry.Rectangle(0, 0, 0, 0));
-            testRectangle5.Add(new Geometry.Rectangle(0, 0, 0, 0));
-            testRectangle5.Add(new Geometry.Rectangle(0,0,0,0));
 
             TestCaseBase[] tc2 = {
                 new TestCaseRectangle(testRectangle1,4,0.05),

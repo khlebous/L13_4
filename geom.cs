@@ -81,7 +81,7 @@ public static class Geometry
 
         }
 
-    public struct Segment
+    public class Segment
         {
 
         public Point ps;  // poczatek odcinka
